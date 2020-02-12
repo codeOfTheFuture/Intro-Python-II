@@ -57,11 +57,39 @@ player_name = input('Choose a name:  ')
 current_player = Player(player_name, room['outside'])
 
 while True:
-    print(f'You are playing as {current_player.name}')
-    print(f'Currently, you are {current_player.current_room.name}')
+    print(current_player.name)
+    print(current_player.current_room.name)
     print(current_player.current_room.description)
 
     direction = input('Choose Direction: ')
 
-    if direction == 'q':
+    if direction == 'n':
+        if current_player.current_room.name == 'Outside Cave Entrance':
+            current_player.change_room(room['outside'].n_to)
+        elif current_player.current_room.name == 'Foyer':
+            current_player.change_room(room['foyer'].n_to)
+        elif current_player.current_room == 'Narrow Passage':
+            current_player.change_room(room['narrow'].n_to)
+        else:
+            print('Please choose a different direction')
+    elif direction == 's':
+        if current_player.current_room.name == 'Foyer':
+            current_player.change_room(room['foyer'].s_to)
+        elif current_player.current_room.name == 'Grand Overlook':
+            current_player.change_room(room['overlook'].s_to)
+        elif current_player.current_room.name == 'Treasure Chamber':
+            current_player.change_room(room['treasure'].s_to)
+        else:
+            print('please choose a different direction')
+    elif direction == 'e':
+        if current_player.current_room.name == 'Foyer':
+            current_player.change_room(room['foyer'].e_to)
+        else:
+            print('please choose a different direction')
+    elif direction == 'w':
+        if current_player.current_room.name == 'Narrow Passage':
+            current_player.change_room(room['narrow'].w_to)
+    elif direction == 'q':
         break
+    else:
+        print('Please choose n for North, s for South, e for East, w for West, or q to quit')
