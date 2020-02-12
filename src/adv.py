@@ -49,3 +49,19 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+from player import Player
+
+player_name = input('Choose a name:  ')
+
+current_player = Player(player_name, room['outside'])
+
+while True:
+    print(f'You are playing as {current_player.name}')
+    print(f'Currently, you are {current_player.current_room.name}')
+    print(current_player.current_room.description)
+
+    direction = input('Choose Direction: ')
+
+    if direction == 'q':
+        break
