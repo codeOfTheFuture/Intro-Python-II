@@ -5,5 +5,11 @@ class Player:
     self.name = name
     self.current_room = current_room
 
-  def change_room(self, new_room):
-    self.current_room = new_room
+  def change_room(self, direction):
+    new_room = getattr(self.current_room, f'{direction}_to')
+
+    if new_room != None:
+      self.current_room = new_room
+      print(self.current_room)
+    else:
+      print('You cannot move in that direction')
