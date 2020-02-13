@@ -12,3 +12,11 @@ class Room:
 
   def __str__(self):
     return f'{self.name}\n\n{self.description}'
+
+  def show_items(self):
+    if len(self.room_items) == 0:
+      print(f'{self.name} has no items to pick up!')
+    else:
+      print(f'This room has the following items: ')
+      for item in self.room_items:
+        print(f'{item}\n')

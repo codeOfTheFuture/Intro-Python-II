@@ -54,7 +54,7 @@ room['treasure'].s_to = room['narrow']
 
 current_player = Player(input('What is your name? '), room['outside'])
 
-print(f'You are playing as {current_player.name}.')
+print(f'\nYou are playing as {current_player.name}.\n')
 
 # while True:
     # print(current_player.name)
@@ -94,13 +94,36 @@ print(f'You are playing as {current_player.name}.')
     # else:
     #     print('Please choose n for North, s for South, e for East, w for West, or q to quit')
 
+print('--------------------------')
 print(current_player.current_room)
+print('--------------------------')
 
 while True:
-    cmd = input('Choose a direction: ').lower()
-    if cmd in ['n', 's', 'e', 'w']:
-        current_player.change_room(cmd)
-    elif cmd == 'q':
-        print('Goodbye!')
+    print('Would you like to:\n Move to another room - press: m\n Pick up an item - press: p\n Drop an item your carrying - press: d\n')
+    
+    player_choice = input('-> ')
+
+    if player_choice == 'm':
+        cmd = input('Choose a direction, n - s - e - w: ').lower()
+        if cmd in ['n', 's', 'e', 'w']:
+            print('--------------------------')
+            current_player.change_room(cmd)
+            current_player.current_room.show_items()
+            print('--------------------------')
+        elif cmd == 'q':
+            print('Goodbye!')
+            break
+    elif player_choice == 'p':
+        print('Which Item would you like to pick up?: ')
+        for item in current_player.current_room.room_items:
+            print(f'{item}\n')
+        selected_item = input('->')
+        current_player.add(selected_item)
+    elif player_choice == 'd':
+        print('Which of your items would you like to drop?: ')
+        for item in current_player.items:
+            print(f'{item}\n')
+        selected_item = input('->')
+        current_player.drop(selected_item)
     else:
         print('Please choose n for north, s for south, e for east, w for west, or q to quit')
