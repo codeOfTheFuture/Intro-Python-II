@@ -19,4 +19,4 @@ class Room:
     else:
       print(f'This room has the following items: ')
       for item in self.room_items:
-        print(f'{item}\n')
+        print(f'\n    {item.name}\n    {item.description}')

@@ -1,25 +1,46 @@
 from room import Room
 from player import Player
+from item import Item
+
+# Declare all the items
+item = {
+    'health':    Item('Health', 
+                      'Increases your health'),
+    'sword':     Item('Sword', 
+                      'Sword will slay an enemy'),
+    'slingshot': Item('Slingshot', 
+                      'Slingshot will reduces enemy\'s health'),
+    'blaster':   Item('Blaster', 
+                      'Blaster will kill an enemy'),
+    'shield':    Item('Shield', 
+                      'Shield will protect you from enemy fire'),
+    'armour':    Item('Armour', 
+                      'Armour will protect you from enemy fire'),
+    'key':       Item('Key',
+                      'Key will unlock a chest'),
+    'treasure':  Item('Treasure',
+                      'Treasure will add to your $$')
+}
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons", ['Health']),
+                     "North of you, the cave mount beckons", [item['health'], item['shield']]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east.""", ['sword']),
+passages run north and east.""", [item['sword'], item['slingshot']]),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm.""", ['blaster']),
+the distance, but there is no way across the chasm.""", [item['blaster'], item['shield']]),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air.""", ['key']),
+to north. The smell of gold permeates the air.""", [item['key'], item['armour']]),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south.""", ['treasure'])
+earlier adventurers. The only exit is to the south.""", [item['treasure'], item['armour']])
 }
 
 
@@ -55,8 +76,49 @@ room['treasure'].s_to = room['narrow']
 current_player = Player(input('What is your name? '), room['outside'])
 
 print(f'\nYou are playing as {current_player.name}.\n')
+print('\n--------------------------------------------\n')
+print(current_player.current_room, '\n\n')
+print(current_player.current_room.show_items())
+print('\n--------------------------------------------\n')
 
-# while True:
+while True:
+    print(current_player.name)
+    print('Your Items: ')
+
+    if len(current_player.items) < 1:
+        print('    You have no items')
+    else:
+        for item in current_player.items:
+            print(f'    {item.name}\n    {item.description}\n')
+
+    print('\nWhat would you like to do next?')
+
+    cmd = input('-> ').lower().split(' ')
+
+    if len(cmd) == 2:
+        action = cmd[0]
+        item = cmd[1]
+
+        if action == 'take':
+            current_player.add(item)
+
+        elif action == 'drop':
+            current_player.drop(item)
+
+    elif len(cmd) == 1:
+        cmd = cmd[0]
+        if cmd in ['n', 's', 'e', 'w']:
+            print('\n--------------------------------------------\n')
+            current_player.change_room(cmd)
+            current_player.current_room.show_items()
+            print('\n--------------------------------------------\n')
+        elif cmd == 'q':
+            print('Goodbye!')
+            break
+    else:
+        print('I did not understand your command!')
+
+    # while True:
     # print(current_player.name)
     # print(current_player.current_room.name)
     # print(current_player.current_room.description)
@@ -94,36 +156,27 @@ print(f'\nYou are playing as {current_player.name}.\n')
     # else:
     #     print('Please choose n for North, s for South, e for East, w for West, or q to quit')
 
-print('--------------------------')
-print(current_player.current_room)
-print('--------------------------')
-
-while True:
-    print('Would you like to:\n Move to another room - press: m\n Pick up an item - press: p\n Drop an item your carrying - press: d\n')
-    
-    player_choice = input('-> ')
-
-    if player_choice == 'm':
-        cmd = input('Choose a direction, n - s - e - w: ').lower()
-        if cmd in ['n', 's', 'e', 'w']:
-            print('--------------------------')
-            current_player.change_room(cmd)
-            current_player.current_room.show_items()
-            print('--------------------------')
-        elif cmd == 'q':
-            print('Goodbye!')
-            break
-    elif player_choice == 'p':
-        print('Which Item would you like to pick up?: ')
-        for item in current_player.current_room.room_items:
-            print(f'{item}\n')
-        selected_item = input('->')
-        current_player.add(selected_item)
-    elif player_choice == 'd':
-        print('Which of your items would you like to drop?: ')
-        for item in current_player.items:
-            print(f'{item}\n')
-        selected_item = input('->')
-        current_player.drop(selected_item)
-    else:
-        print('Please choose n for north, s for south, e for east, w for west, or q to quit')
+    # if player_choice == 'm':
+    #     cmd = input('Choose a direction: ').lower()
+    #     if cmd in ['n', 's', 'e', 'w']:
+    #         print('\n--------------------------------------------\n')
+    #         current_player.change_room(cmd)
+    #         current_player.current_room.show_items()
+    #         print('\n--------------------------------------------\n')
+    #     elif cmd == 'q':
+    #         print('Goodbye!')
+    #         break
+    # elif player_choice == 'p':
+    #     print('Which Item would you like to pick up?: ')
+    #     for item in current_player.current_room.room_items:
+    #         print(f'{item}\n')
+    #     selected_item = input('->')
+    #     current_player.add(selected_item)
+    # elif player_choice == 'd':
+    #     print('Which of your items would you like to drop?: ')
+    #     for item in current_player.items:
+    #         print(f'{item}\n')
+    #     selected_item = input('->')
+    #     current_player.drop(selected_item)
+    # else:
+    #     print('Please choose n for north, s for south, e for east, w for west, or q to quit')

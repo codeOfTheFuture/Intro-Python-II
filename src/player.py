@@ -20,17 +20,17 @@ class Player:
       print('This room does not have any items!')
     else:
       for item in self.current_room.room_items:
-        if item == selected_item:
+        if item.name == selected_item.capitalize():
           self.current_room.room_items.remove(item)
           self.items.append(item)
-          print(f'You are now carrying: {item}\n')
+          print(f'You are now carrying: {item.name}\n')
 
   def drop(self, selected_item):
     if len(self.items) == 0:
       print('You do not have any items')
     else:
       for item in self.items:
-        if item == selected_item:
+        if item.name == selected_item.capitalize():
           self.items.remove(item)
           self.current_room.room_items.append(item)
-          print(f'You are no longer carrying {item}\n')
+          print(f'You are no longer carrying {item.name}\n')
